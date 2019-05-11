@@ -1,0 +1,153 @@
+---
+title: "GDP OF US STATES"
+output:
+  flexdashboard::flex_dashboard: null
+  'flexdashboard::flex_dashboard:': default
+#orientation: columns
+#vertical_layout: fill
+#runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+library(leaflet)
+library(maps)
+library(gganimate)
+library('plotly')
+library('ggplot2')
+
+data<- read.csv("gdpus1.csv",header=T)
+str(data)
+
+```
+
+
+
+GDP DISTRIBUTION IN 2017 
+===========================================================================
+column (Hover over graph to see specific State)
+-----------------------------------------------------------------------
+```{r}
+library('plotly')
+
+#bar_chart<-plot_ly(data,x=data$Country,y=data$X2015,type='histogram')
+#bar_chart
+
+library('ggplot2')
+
+
+plot_ly(data, x=data$Area, y=data$X2017,color=data$Area)
+#p<-ggplot(data,aes(Area, X2017))+geom_point()
+#ggplotly(p)
+
+```
+
+Hover over graph to see specific State
+-----------------------------------------------------------------------
+```{r}
+library('plotly')
+
+#bar_chart<-plot_ly(data,x=data$Country,y=data$X2015,type='histogram')
+#bar_chart
+
+library('ggplot2')
+
+plot_ly(data, x=data$Area, y=data$X2016,color=data$Area)
+#p<-ggplot(data,aes(Area, X2017))+geom_point()
+#ggplotly(p)
+
+```
+Hover over graph to see specific State
+-----------------------------------------------------------------------
+```{r}
+library('plotly')
+
+#bar_chart<-plot_ly(data,x=data$Country,y=data$X2015,type='histogram')
+#bar_chart
+
+library('ggplot2')
+
+plot_ly(data, x=data$Area, y=data$X2015,color=data$Area)
+#p<-ggplot(data,aes(Area, X2017))+geom_point()
+#ggplotly(p)
+
+```
+Hover over graph to see specific State
+-----------------------------------------------------------------------
+```{r}
+library('plotly')
+
+#bar_chart<-plot_ly(data,x=data$Country,y=data$X2015,type='histogram')
+#bar_chart
+
+library('ggplot2')
+
+plot_ly(data, x=data$Area, y=data$X2014,color=data$Area)
+#p<-ggplot(data,aes(Area, X2017))+geom_point()
+#ggplotly(p)
+
+```
+Hover over graph to see specific State
+-----------------------------------------------------------------------
+```{r}
+library('plotly')
+
+#bar_chart<-plot_ly(data,x=data$Country,y=data$X2015,type='histogram')
+#bar_chart
+
+library('ggplot2')
+
+plot_ly(data, x=data$Area, y=data$X2013,color=data$Area)
+#p<-ggplot(data,aes(Area, X2017))+geom_point()
+#ggplotly(p)
+
+```
+PERCENT CHANGE IN GPP OVER 4 YEARS 
+----------------------------------------------------------------------
+
+```{r}
+library(plotly) 
+data <- mutate(data, percent = ((X2017-X2013)/X2013)*100)
+
+p<-ggplot(data,aes(Area, percent))+geom_bar(stat = "identity")+labs(title = "percent of gdp change over four years",
+         x = "STATE",
+         y = "Percent GDP change") 
+ggplotly(p)
+```
+
+TABLE OF DATA
+=======================================================================
+
+```{r}
+#install.packages("dplyr")
+library("dplyr")
+
+select( data,Area,X2017)
+
+```
+
+SCATTER PLOT VISUALIZATION (ANIME )
+==========================================================================
+
+```{r}
+p<-ggplot(data,aes(Area, X2017,frame=Area,label=Area))+geom_point(aes(color=Area,size=X2017))+geom_text(size=4,aes(label=Area))
+
+ggplotly(p)
+#gg_animate(p)
+
+```
+
+MAP REPRESENTATION
+=========================================================================
+
+```{r}
+mapstates=map("state",fill=TRUE,plot=FALSE)
+leaflet() %>% addTiles()%>% addCircles(data=data,popup = as.character(data$X2017),radius=500) 
+#addPolygons(fillColor=topo.colors(10,alpha=NULL),stroke=FALSE)
+
+```
+
+
+
+
